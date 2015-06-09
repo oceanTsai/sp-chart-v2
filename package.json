@@ -1,0 +1,24 @@
+{
+  "name": "sp-chart-v2",
+  "version": "1.0.0",
+  "description": "SP Chart V2", 
+  "keywords": [
+    "sp",
+    "chart",
+    "d3",
+    "sp-chart",
+    "v2"
+  ],
+  "author": "ocean",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oceanTsai/sp-chart-v2.git"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.php"
+    }
+  ],
+  "main": "src/sp-chart-v2.js"
+}
