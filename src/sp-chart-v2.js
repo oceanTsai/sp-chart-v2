@@ -452,7 +452,11 @@
 		};
 		return {	
 			/**將標記移至最上層*/
-			markToFirstLayer : function(){
+			markToFirstLayer : function(display){
+				var childer = $(display);
+				var parent = childer.parent();
+				childer.remove();
+				parent.prepend(childer[0]);
 			},
 			renderChart : function(viewModel){
 				var svg = createSVG(viewModel);
@@ -533,6 +537,7 @@
 							ChartPan.renderChart(viewModel);
 						}
 					}
+					return viewModel.model.base.getOptions();
 				},
 				clearChart : function(identity){
 					unRegisterChart(identity);
