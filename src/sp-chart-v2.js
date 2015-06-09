@@ -317,17 +317,19 @@
 				//x軸
 				point.x = left + (s *basicThree);
 				
-				g.append('circle')
-				 .datum({viewModel : viewModel , info : data[i]})
-				 .attr('cx', point.x )
-				 .attr('cy', point.y )
-				 .attr('r' , opt.markRadius)
-				 .attr('fill', opt.markColor(i))
-				 .attr('fill-opacity', opt.markOpacity)
-				 .attr('stroke', opt.markStroke)
-				 .attr('stroke-width', opt.markStrokeWidth)
-				 .on('mouseover', EventHandler.markMouseOver)
-				 .on('mouseout' , EventHandler.markMouseOut);
+				var mark = g.append('circle')
+				mark.datum({viewModel : viewModel , info : data[i]})
+					.attr('cx', point.x )
+					.attr('cy', point.y )
+					.attr('r' , opt.markRadius)
+					.attr('fill', opt.markColor(i))
+					.attr('fill-opacity', opt.markOpacity)
+					.attr('stroke', opt.markStroke)
+					.attr('stroke-width', opt.markStrokeWidth)
+					.on('mouseover', EventHandler.markMouseOver)
+					.on('mouseout' , EventHandler.markMouseOut);
+				viewModel.marks.push(mark);
+
 			}
 		};
 
@@ -473,7 +475,21 @@
 	var SP_ChartPainter = (function(document, d3, $){
 			/**清除SVG內容*/
 			clearSVG = function(identity){
-				//d3.select(identity).select('svg').remove();
+				$(identity).empty();
+			},
+			destroy = function(viewModel){
+				//viewModel.identity = null;
+				//viewModel.element = null;
+				//viewModel.model = null;
+				if(viewModel.marks && viewModel.marks.length > 0){
+					for(var i=0,l=viewModel.marks.length ; i < l ; i++){
+						viewModel.marks[i].on('mouseover', null)
+						viewModel.marks[i].on('mouseout' , null);
+					}
+				}
+				for(var attr in viewModel){
+					viewModel['attr'] = null;
+				}
 			},
 			/**檢查是否可以註冊*/
 			canRegister = function(identity){
@@ -491,7 +507,7 @@
 			},
 			/**註冊*/
 			registerChart = function(identity, element, data, options){
-				var viewModel = {identity : identity, element : element, model : new ChartModel(data, options)};
+				var viewModel = {identity : identity, element : element, model : new ChartModel(data, options), marks : []};
 					viewModels.push(viewModel);
 				return viewModel;
 			},
@@ -501,9 +517,7 @@
 				for(var i=elements.length-1 ; i > -1 ; i--){
 					for(var c=viewModels.length-1 ; c > -1 ; c--){
 						if(elements[i] === viewModels[c]['element']){
-							viewModels[c].identity = null;
-							viewModels[c].element = null;
-							viewModels[c].model = null;
+							destroy(viewModels[c]);
 							viewModels[c] = null
 							viewModels.splice(c,1);
 						}
