@@ -451,12 +451,18 @@
 	      	return d3.select(svg[0]); //轉d3
 		};
 		return {	
-			/**將標記移至最上層*/
+			/**將標記移至最底層*/
 			markToFirstLayer : function(display){
 				var childer = $(display);
 				var parent = childer.parent();
 				childer.remove();
 				parent.prepend(childer[0]);
+			},
+			markToLastLayer : function(display){
+				var childer = $(display);
+				var parent = childer.parent();
+				childer.remove();
+				parent.append(childer[0]);
 			},
 			renderChart : function(viewModel){
 				var svg = createSVG(viewModel);
@@ -542,6 +548,12 @@
 				clearChart : function(identity){
 					unRegisterChart(identity);
 					clearSVG(identity);
+				},
+				markToFirstLayer : function(display){
+					ChartPan.markToFirstLayer(display);
+				},
+				markToLastLayer : function(display){
+					ChartPan.markToLastLayer(display);
 				}
 		};
 	})(document, d3, $);

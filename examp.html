@@ -16,7 +16,8 @@
 </head>
 <body>
 	<div class="box"></div>
-	<div class="box"></div>
+	<input type="button"  value='上移' id="btn"/> 
+	<div class="box1"></div>
 	<div class='box2'></div>
 	<div class='box3'></div>
 	<div class='box3'></div>
@@ -25,6 +26,7 @@
 
 <script src="./node_modules/d3/d3.min.js"></script>
 <script src="./src/sp-chart-v2.js"></script>
+
 
 <script>
 var data = [
@@ -45,10 +47,19 @@ var data = [
            ];
            
 window.SP_ChartPainter.drawChart(".box", data, {sTitle : '挖哈哈'});
+window.SP_ChartPainter.drawChart(".box1", data);
 window.SP_ChartPainter.drawChart(".box2", data);
 window.SP_ChartPainter.drawChart(".box3", data);
 console.log(window.SP_ChartPainter.drawChart(".box4", data));
 
 window.SP_ChartPainter.clearChart('.box3');
+
+
+$('#btn').click(function(e){
+	var display = $('.box > svg > .sp-markGroup circle')[3]
+	console.log(display);
+	SP_ChartPainter.markToLastLayer(display);
+});
+
 </script>
 </html>
